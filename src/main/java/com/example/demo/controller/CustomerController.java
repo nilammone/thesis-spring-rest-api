@@ -63,6 +63,13 @@ public class CustomerController {
         }
     }
 
+    // create cus by query
+    @PostMapping("/customersQue/{record}")
+    public ResponseEntity<?> createCustomerQue(@PathVariable("record") long record,
+            @RequestBody CustomerModel customerModel) throws Exception {
+        return new ResponseEntity<>(this.customerServiceImp.CreateDataCusQue(record, customerModel), HttpStatus.OK);
+    }
+
     @PutMapping("/customers/{id}")
     public ResponseEntity<CustomerModel> updateCustomers(@PathVariable("id") long id,
             @RequestBody CustomerModel customerModel) {

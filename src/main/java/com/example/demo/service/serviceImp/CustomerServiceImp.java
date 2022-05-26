@@ -43,4 +43,19 @@ public class CustomerServiceImp implements CustomerService {
                 .update("UPDATE cus_data SET first_name = '" + customerModel.getFirst_name() + "' WHERE id <= " + id);
         return this.responseHelper.success(customerModel, "success");
     }
+
+    @Override
+    public HashMap<String, Object> CreateDataCusQue(long record, CustomerModel customerModel) throws Exception {
+
+        for (int i = 0; i < record; i++) {
+
+            this.jdbcTemplate.update(
+                    "INSERT INTO cus_data (first_name, last_name, birth_date, e_mail, phone, address) VALUES ('"
+                            + customerModel.getFirst_name() + "', '" + customerModel.getLast_name() + "', '"
+                            + customerModel.getBirth_date() + "', '" + customerModel.getE_mail() + "', '"
+                            + customerModel.getPhone() + "', '" + customerModel.getAddress() + "')");
+
+        }
+        return this.responseHelper.success(customerModel, "success");
+    }
 }

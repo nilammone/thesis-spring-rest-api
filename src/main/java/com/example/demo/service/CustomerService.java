@@ -10,4 +10,6 @@ public interface CustomerService {
     HashMap<String, Object> DelDataCusQue(long id) throws Exception;
 
     HashMap<String, Object> UpdateDataCusQue(long id, CustomerModel customerModel) throws Exception;
+
+    HashMap<String, Object> CreateDataCusQue(long record, CustomerModel customerModel) throws Exception;
 }
