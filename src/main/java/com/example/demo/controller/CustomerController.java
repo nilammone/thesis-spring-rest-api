@@ -5,9 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 import com.example.demo.model.CustomerModel;
-import com.example.demo.model.Tutorial;
 import com.example.demo.repository.CustomerRepository;
-import com.example.demo.repository.TutorialRepository;
+import com.example.demo.service.serviceImp.CustomerServiceImp;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,13 +19,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin(origins = "http://localhost:8080")
 @RestController
 @RequestMapping("/api")
 public class CustomerController {
+    private final CustomerServiceImp customerServiceImp;
+
+    public CustomerController(CustomerServiceImp customerServiceImp) {
+        this.customerServiceImp = customerServiceImp;
+    }
+
     @Autowired
     CustomerRepository customerRepository;
 
@@ -41,6 +45,12 @@ public class CustomerController {
         }
     }
 
+    // get by limit
+    @GetMapping("/customersByLimit/{record}")
+    public ResponseEntity<?> customersgetByLimit(@PathVariable("record") String record) throws Exception {
+        return new ResponseEntity<>(this.customerServiceImp.GetDataCusByLimit(record), HttpStatus.OK);
+    }
+
     @PostMapping("/customers")
     public ResponseEntity<CustomerModel> createCustomers(@RequestBody CustomerModel customerModel) {
         try {
@@ -51,6 +61,13 @@ public class CustomerController {
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    // create cus by query
+    @PostMapping("/customersQue/{record}")
+    public ResponseEntity<?> createCustomerQue(@PathVariable("record") long record,
+            @RequestBody CustomerModel customerModel) throws Exception {
+        return new ResponseEntity<>(this.customerServiceImp.CreateDataCusQue(record, customerModel), HttpStatus.OK);
     }
 
     @PutMapping("/customers/{id}")
@@ -71,6 +88,13 @@ public class CustomerController {
         }
     }
 
+    // update by que
+    @PutMapping("/customerQue/{id}")
+    public ResponseEntity<?> updateCustomerQue(@PathVariable("id") long id, @RequestBody CustomerModel customers)
+            throws Exception {
+        return new ResponseEntity<>(this.customerServiceImp.UpdateDataCusQue(id, customers), HttpStatus.OK);
+    }
+
     @DeleteMapping("/customers/{id}")
     public ResponseEntity<HttpStatus> deleteCustomers(@PathVariable("id") long id) {
         try {
@@ -79,6 +103,12 @@ public class CustomerController {
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    // delete by query
+    @DeleteMapping("/customersQue/{id}")
+    public ResponseEntity<?> deleteCustomersQue(@PathVariable("id") long id) throws Exception {
+        return new ResponseEntity<>(this.customerServiceImp.DelDataCusQue(id), HttpStatus.OK);
     }
 
 }
