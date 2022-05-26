@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import com.example.demo.model.CustomerModel;
 import com.example.demo.repository.CustomerRepository;
+import com.example.demo.service.serviceImp.CustomerServiceImp;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api")
 public class CustomerController {
+    private final CustomerServiceImp customerServiceImp;
+
+    public CustomerController(CustomerServiceImp customerServiceImp) {
+        this.customerServiceImp = customerServiceImp;
+    }
+
     @Autowired
     CustomerRepository customerRepository;
 
@@ -36,6 +43,12 @@ public class CustomerController {
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    // get by limit
+    @GetMapping("/customersByLimit/{record}")
+    public ResponseEntity<?> customersgetByLimit(@PathVariable("record") String record) throws Exception {
+        return new ResponseEntity<>(this.customerServiceImp.GetDataCusByLimit(record), HttpStatus.OK);
     }
 
     @PostMapping("/customers")
