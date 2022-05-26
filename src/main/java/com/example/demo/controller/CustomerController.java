@@ -81,6 +81,13 @@ public class CustomerController {
         }
     }
 
+    // update by que
+    @PutMapping("/customerQue/{id}")
+    public ResponseEntity<?> updateCustomerQue(@PathVariable("id") long id, @RequestBody CustomerModel customers)
+            throws Exception {
+        return new ResponseEntity<>(this.customerServiceImp.UpdateDataCusQue(id, customers), HttpStatus.OK);
+    }
+
     @DeleteMapping("/customers/{id}")
     public ResponseEntity<HttpStatus> deleteCustomers(@PathVariable("id") long id) {
         try {
@@ -89,6 +96,12 @@ public class CustomerController {
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    // delete by query
+    @DeleteMapping("/customersQue/{id}")
+    public ResponseEntity<?> deleteCustomersQue(@PathVariable("id") long id) throws Exception {
+        return new ResponseEntity<>(this.customerServiceImp.DelDataCusQue(id), HttpStatus.OK);
     }
 
 }
